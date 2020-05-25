@@ -3,17 +3,28 @@ extends KinematicBody2D
 const ball_scene = preload("res://Scenes/Ball.tscn")
 
 func _ready():
-	set_physics_process(true)
 	set_process_input(true)
 
-func _physics_process(delta):
-	var y = position.y
-#	var mouse_x = get_viewport().get_mouse_position().x
-#	set_position(Vector2(mouse_x, y))
 
 func _input(event):
-	if(event is InputEventMouseButton && event.is_pressed()):
-		var ball = ball_scene.instance()
-		ball.set_position(position-Vector2(0,0))
-		get_tree().root.add_child(ball)
-		
+	var posx = position.x
+	var posy = position.y
+	
+	if event is InputEventMouseButton:
+			if event.is_pressed():
+				var ball = ball_scene.instance()
+				ball.set_position(position-Vector2(0,0))
+				get_tree().root.add_child(ball)
+				
+	elif event is InputEventKey:
+		match event.scancode:
+			KEY_W:
+				posy -= 5
+			KEY_S:
+				posy += 5
+			KEY_A:
+				posx -= 5
+			KEY_D:
+				posx += 5
+				
+		set_position(Vector2(posx, posy))
